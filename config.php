@@ -1,4 +1,8 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $host = 'localhost'; 
 $dbname = 'dj_projekt'; 
 $username = 'root'; // Domyślna nazwa użytkownika w XAMPP

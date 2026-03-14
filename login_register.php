@@ -22,11 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['admin'] = $user['id_user'];
             header("Location: admin_panel.php");
         } elseif ($user['id_uprawnienia'] == 2) {
-            // Przekierowanie do panelu użytkownika
-            header("Location: user_dashboard.php");
-        } else {
             // Przekierowanie do panelu moderatora
             header("Location: moderator_dashboard.php");
+        } else {
+            // Przekierowanie do panelu użytkownika
+            header("Location: user_dashboard.php");
         }
         exit();
     } else {
