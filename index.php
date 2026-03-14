@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'config.php';
 
 try {
@@ -52,8 +53,19 @@ try {
 <body>
     <div class="container">
         <h1>Witamy na stronie wynajmu DJ-a!</h1>
-        <a href="login_register.php" class="button">Zaloguj się</a>
-        <a href="rejestracja_register.php" class="button">Zarejestruj się</a>
+        <?php if (isset($_SESSION['id_user'])): ?>
+            <?php if (!empty($_SESSION['admin'])): ?>
+                <a href="admin_panel.php" class="button">Panel administratora</a>
+            <?php elseif (!empty($_SESSION['id_uprawnienia']) && $_SESSION['id_uprawnienia'] == 2): ?>
+                <a href="user_dashboard.php" class="button">Panel użytkownika</a>
+            <?php else: ?>
+                <a href="moderator_dashboard.php" class="button">Panel moderatora</a>
+            <?php endif; ?>
+            <a href="logout.php" class="button">Wyloguj się</a>
+        <?php else: ?>
+            <a href="login_register.php" class="button">Zaloguj się</a>
+            <a href="rejestracja_register.php" class="button">Zarejestruj się</a>
+        <?php endif; ?>
         
         <!-- Sekcja ofert -->
         <section>

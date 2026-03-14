@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Lis 21, 2024 at 01:44 AM
+-- Generation Time: Mar 14, 2026 at 09:02 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -31,7 +31,8 @@ CREATE TABLE `faq` (
   `id_faq` int(11) NOT NULL,
   `pytanie` varchar(255) DEFAULT NULL,
   `odpowiedz` varchar(255) DEFAULT NULL,
-  `id_user` int(11) DEFAULT NULL COMMENT 'Użytkownik, który zadał pytanie'
+  `id_user` int(11) DEFAULT NULL COMMENT 'Użytkownik, który zadał pytanie',
+  `data_pytania` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -118,7 +119,8 @@ CREATE TABLE `rezerwacja` (
   `id_rezerwacji` int(11) NOT NULL,
   `id_user` int(11) DEFAULT NULL,
   `termin` date DEFAULT NULL,
-  `id_uslugi` int(11) DEFAULT NULL
+  `id_uslugi` int(11) DEFAULT NULL,
+  `status` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -138,7 +140,8 @@ CREATE TABLE `uprawnienia` (
 
 INSERT INTO `uprawnienia` (`id_uprawnienia`, `nazwa_uprawnienia`) VALUES
 (1, 'Administrator'),
-(2, 'Użytkownik');
+(2, 'Moderator'),
+(3, 'Użytkownik');
 
 -- --------------------------------------------------------
 
@@ -166,8 +169,8 @@ CREATE TABLE `uzytkownicy` (
 --
 
 INSERT INTO `uzytkownicy` (`id_user`, `login`, `haslo`, `email`, `imie`, `nazwisko`, `miasto`, `ulica`, `nr_domu`, `nr_mieszkania`, `nr_telefonu`, `id_uprawnienia`) VALUES
-(0, 'admin', '1f02fde161d43f54bf3736f8aaad3a8b72f7d1b47665f2bea73cdb7b51278116', 'admin@example.com', 'Admin', 'Admin', 'Warszawa', 'Adminowa', 1, NULL, '123456789', 1);
--- djadmin2137
+(1, 'admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 'admin@example.com', 'Admin', 'Admin', 'Warszawa', 'Adminowa', 1, 0, '123456789', 1),
+(3, 'example', '50d858e0985ecc7f60418aaf0cc5ab587f42c2570a884095a9e8ccacd0f6545c', 'example@example.com', 'example', 'example', 'example', 'example', 1, 0, '123456798', 3);
 
 --
 -- Indeksy dla zrzutów tabel
@@ -228,6 +231,16 @@ ALTER TABLE `uzytkownicy`
   ADD PRIMARY KEY (`id_user`),
   ADD UNIQUE KEY `email` (`email`),
   ADD KEY `id_uprawnienia` (`id_uprawnienia`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `uzytkownicy`
+--
+ALTER TABLE `uzytkownicy`
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
