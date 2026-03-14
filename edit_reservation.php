@@ -65,7 +65,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         }
 
         echo "Rezerwacja została zaktualizowana.";
-        header("Location: user_orders.php");
+        header("Location: user/user_dashboard.php");
         exit();
     }
 } else {
@@ -105,7 +105,9 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
             <button type="submit" class="btn">Zaktualizuj rezerwację</button>
         </form>
-        <a href="user_orders.php" class="button">Powrót do Twoich zamówień</a>
+        <a href="user/user_dashboard.php" class="button">Powrót do Twoich zamówień</a>
     </div>
 </body>
 </html>
+
+

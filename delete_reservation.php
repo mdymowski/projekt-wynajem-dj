@@ -20,7 +20,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
     if ($reservation) {
         if ($reservation['status'] == 1) { // Sprawdzanie, czy rezerwacja jest zatwierdzona
-            echo "<script>alert('Nie można usunąć zatwierdzonej rezerwacji! Skontaktuj się z administratorem.'); window.location.href = 'user_orders.php';</script>";
+            echo "<script>alert('Nie można usunąć zatwierdzonej rezerwacji! Skontaktuj się z administratorem.'); window.location.href = 'user/user_dashboard.php';</script>";
             exit();
         }
 
@@ -32,12 +32,14 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         $stmt = $pdo->prepare("DELETE FROM rezerwacja WHERE id_rezerwacji = ?");
         $stmt->execute([$reservation_id]);
 
-        echo "<script>alert('Rezerwacja i powiązana playlista zostały usunięte.'); window.location.href = 'user_orders.php';</script>";
+        echo "<script>alert('Rezerwacja i powiązana playlista zostały usunięte.'); window.location.href = 'user/user_dashboard.php';</script>";
         exit();
     } else {
-        echo "<script>alert('Błąd: Nie znaleziono rezerwacji.'); window.location.href = 'user_orders.php';</script>";
+        echo "<script>alert('Błąd: Nie znaleziono rezerwacji.'); window.location.href = 'user/user_dashboard.php';</script>";
     }
 } else {
-    echo "<script>alert('Błąd: Nieprawidłowy identyfikator rezerwacji.'); window.location.href = 'user_orders.php';</script>";
+    echo "<script>alert('Błąd: Nieprawidłowy identyfikator rezerwacji.'); window.location.href = 'user/user_dashboard.php';</script>";
 }
 ?>
+
+

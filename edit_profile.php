@@ -121,7 +121,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit" name="delete_account" class="button">Usuń konto</button>
         </form>
 
-        <a href="user_dashboard.php" class="button">Powrót do panelu użytkownika</a>
+        <a href="user/user_dashboard.php" class="button">Powrót do panelu użytkownika</a>
     </div>
 </body>
 </html>
+
+

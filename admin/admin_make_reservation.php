@@ -1,9 +1,9 @@
 <?php
-include 'config.php';
+include '../config.php';
 
 session_start();
-if (!isset($_SESSION['id_user'])) {
-    header("Location: login_register.php"); // Przekierowanie na stronę logowania, jeśli nie jest zalogowany
+if (!isset($_SESSION['admin'])) {
+    header("Location: ../login_register.php"); // Przekierowanie na stronę logowania, jeśli nie jest administratorem
     exit();
 }
 
@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $service = trim($_POST['service']);
     $date = trim($_POST['date']);
     $playlist_link = trim($_POST['playlist_link']); // Pobranie linku do playlisty
+    $selected_user = intval($_POST['user']);
 
     // Walidacja daty rezerwacji (czy jest w przyszłości)
     $current_date = date('Y-m-d');
@@ -21,8 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        $user_id = $_SESSION['id_user'];
-
         // Pobranie ID usługi
         $stmt = $pdo->prepare("SELECT id_uslugi FROM oferta_uslug WHERE nazwa = ?");
         $stmt->execute([$service]);
@@ -34,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Dodanie rezerwacji do bazy danych z domyślnym statusem '0' (oczekująca)
         $stmt = $pdo->prepare("INSERT INTO rezerwacja (id_user, termin, id_uslugi, status) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$user_id, $date, $service_id, 0]); // Status 0 oznacza oczekującą rezerwację
+        $stmt->execute([$selected_user, $date, $service_id, 0]); // Status 0 oznacza oczekującą rezerwację
 
         // Pobranie ID ostatniej dodanej rezerwacji
         $reservation_id = $pdo->lastInsertId();
@@ -45,15 +44,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([$reservation_id, $playlist_link]);
         }
 
-        echo "Rezerwacja została pomyślnie dodana! Teraz oczekuje na potwierdzenie przez administratora.";
+        echo "Zamówienie zostało pomyślnie dodane!";
     } catch (Exception $e) {
         // Obsługa błędów
-        echo "Wystąpił błąd podczas dodawania rezerwacji: " . $e->getMessage();
+        echo "Wystąpił błąd podczas dodawania zamówienia: " . $e->getMessage();
     }
 }
 
 try {
-    // Pobieranie danych z bazy do wyswietlenia ofert i promocji
+    // Pobieranie danych z bazy do wyświetlenia ofert i promocji
     $stmt_offers = $pdo->query("SELECT nazwa, cena, opis FROM oferta_uslug");
     $offers = $stmt_offers->fetchAll(PDO::FETCH_ASSOC);
 
@@ -64,6 +63,9 @@ try {
     $stmt_services = $pdo->query("SELECT nazwa FROM oferta_uslug");
     $services = $stmt_services->fetchAll(PDO::FETCH_ASSOC);
 
+    // Pobranie listy użytkowników
+    $stmt_users = $pdo->query("SELECT id_user, CONCAT(imie, ' ', nazwisko) AS fullname FROM uzytkownicy");
+    $users = $stmt_users->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("Błąd podczas pobierania danych: " . $e->getMessage());
 }
@@ -74,12 +76,12 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rezerwacja</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Dodaj Zamówienie</title>
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Formularz rezerwacji</h1>
+        <h1>Formularz Dodawania Zamówienia</h1>
         <h2>Nasze Usługi</h2>
             <div class="offers">
                 <?php foreach ($offers as $offer): ?>
@@ -110,6 +112,15 @@ try {
         </section>
         <br>
         <form method="POST">
+            <label for="user">Wybierz użytkownika:</label>
+            <select id="user" name="user" required>
+                <?php foreach ($users as $user): ?>
+                    <option value="<?= htmlspecialchars($user['id_user']) ?>">
+                        <?= htmlspecialchars($user['fullname']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+
             <label for="service">Wybierz usługę:</label>
             <select id="service" name="service" required>
                 <?php foreach ($services as $service): ?>
@@ -119,15 +130,15 @@ try {
                 <?php endforeach; ?>
             </select>
 
-            <label for="date">Data rezerwacji:</label>
+            <label for="date">Data realizacji zamówienia:</label>
             <input type="date" id="date" name="date" required>
 
             <label for="playlist_link">Link do playlisty (opcjonalnie):</label>
             <input type="url" id="playlist_link" name="playlist_link" placeholder="https://example.com/playlist">
 
-            <button type="submit" class="button">Zarezerwuj</button>
+            <button type="submit" class="button">Dodaj Zamówienie</button>
         </form>
-        <a href="user/user_dashboard.php" class="button">Powrót do panelu użytkownika</a>
+        <a href="admin_panel.php" class="button">Powrót do panelu administratora</a>
     </div>
 </body>
 </html>

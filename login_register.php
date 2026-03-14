@@ -20,13 +20,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Jeżeli użytkownik jest administratorem
         if ($user['id_uprawnienia'] == 1) {
             $_SESSION['admin'] = $user['id_user'];
-            header("Location: admin_panel.php");
+            header("Location: admin/admin_panel.php");
         } elseif ($user['id_uprawnienia'] == 2) {
             // Przekierowanie do panelu moderatora
-            header("Location: moderator_dashboard.php");
+            header("Location: moderator/moderator_dashboard.php");
         } else {
             // Przekierowanie do panelu użytkownika
-            header("Location: user_dashboard.php");
+            header("Location: user/user_dashboard.php");
         }
         exit();
     } else {
@@ -60,3 +60,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </body>
 </html>
+
+

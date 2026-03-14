@@ -55,11 +55,11 @@ try {
         <h1>Witamy na stronie wynajmu DJ-a!</h1>
         <?php if (isset($_SESSION['id_user'])): ?>
             <?php if (!empty($_SESSION['admin'])): ?>
-                <a href="admin_panel.php" class="button">Panel administratora</a>
+                <a href="admin/admin_panel.php" class="button">Panel administratora</a>
             <?php elseif (!empty($_SESSION['id_uprawnienia']) && $_SESSION['id_uprawnienia'] == 2): ?>
-                <a href="moderator_dashboard.php" class="button">Panel moderatora</a>
+                <a href="moderator/moderator_dashboard.php" class="button">Panel moderatora</a>
             <?php else: ?>
-                <a href="user_dashboard.php" class="button">Panel użytkownika</a>
+                <a href="user/user_dashboard.php" class="button">Panel użytkownika</a>
             <?php endif; ?>
             <a href="logout.php" class="button">Wyloguj się</a>
         <?php else: ?>
@@ -150,3 +150,5 @@ try {
     </div>
 </body>
 </html>
+
+
