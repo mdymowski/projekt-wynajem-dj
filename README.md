@@ -14,3 +14,10 @@ This project is published for portfolio purposes only.
 Unless stated otherwise, all rights to the source code, materials, and repository contents are reserved. This repository is publicly available solely for project presentation purposes.
 
 The code is not provided for reuse, copying, modification, distribution, or use in private, commercial, or educational projects without the authors prior permission.
+
+## Autorzy
+Projekt wykonany wspólnie przez:
+- mdymowski (https://github.com/mdymowski)
+- UltreQ (https://github.com/ultreq)
+
+Projekt zespołowy, realizowany w 2 osoby.
